@@ -1,4 +1,4 @@
 const errorHandler = require('./errorHandler');
-const { getToken } = require('./token');
+const { getToken, setToken } = require('./token');
 
-module.exports = { errorHandler, getToken };
+module.exports = { errorHandler, getToken, setToken };

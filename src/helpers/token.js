@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { redis } = require('../config');
 const { ZOOM_OAUTH_ENDPOINT } = require('../constants');
 
 const getToken = async () => {
@@ -27,4 +28,20 @@ const getToken = async () => {
 
 }; //GETTOKEN-END
 
-module.exports = { getToken };
+const setToken = async ({ access_token, expires_in }) => {
+
+    try {
+
+        await redis.set('access_token', access_token);
+
+        await redis.expire('access_token', expires_in);
+
+    } catch (error) {
+
+        throw error;
+
+    };
+
+}; //SETTOKEN-END
+
+module.exports = { getToken, setToken };

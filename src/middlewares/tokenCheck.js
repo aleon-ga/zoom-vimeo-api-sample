@@ -1,26 +1,33 @@
-const { getToken } = require('../helpers');
+const { redis } = require('../config');
+const { getToken, setToken } = require('../helpers');
 
 const tokenCheck = async (req, res, next) => {
 
     try {
 
-        // let token = redis_token;
+        const redisToken = await redis.get('access_token');
 
-        let token = null;
+        let token = redisToken;
 
-        const { access_token, expires_in, error } = await getToken();
+        if (!redisToken) {
 
-        if (error) {
+            const { access_token, expires_in, error } = await getToken();
 
-            const { response, message } = error;
+            if (error) {
 
-            res.status(response?.status || 401).json({ message: `Authentication unsuccessful: ${message}` });
+                const { response, message } = error;
 
-            return;
+                res.status(response?.status || 401).json({ message: `Authentication unsuccessful: ${message}` });
+
+                return;
+
+            };
+
+            setToken({ access_token, expires_in });
+
+            token = access_token;
 
         };
-
-        token = access_token;
 
         req.headerConfig = { headers: { Authorization: `Bearer ${token}` } };
 

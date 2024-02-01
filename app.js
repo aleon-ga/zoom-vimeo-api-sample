@@ -1,10 +1,14 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const { redisConnect } = require('./src/services');
 const { errorHandler } = require('./src/helpers');
 
 // App init
 const app = express();
+
+// Establish Redis connection
+redisConnect();
 
 // Middlewares
 app.use([
