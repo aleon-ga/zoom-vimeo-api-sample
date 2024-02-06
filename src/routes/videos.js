@@ -1,5 +1,5 @@
 const router = require('express')?.Router();
-const { uploadVideos } = require('../controllers/videosController');
+const { videosController: { uploadVideos } } = require('../controllers');
 const { tokenCheck } = require('../middlewares');
 
 router.post('/upload', [tokenCheck], uploadVideos);

@@ -27,9 +27,11 @@ const tokenCheck = async (req, res, next) => {
 
             token = access_token;
 
+            console.log('New token generated successfully');
+
         };
 
-        req.headerConfig = { headers: { Authorization: `Bearer ${token}` } };
+        req.authorizationHeader = { Authorization: `Bearer ${token}` };
 
         next();
 
